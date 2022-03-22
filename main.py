@@ -1,13 +1,14 @@
 
 import tkinter as tk
-from turtle import color 
+import time
 from PIL import Image, ImageTk
 from tkinter import messagebox
 
 
-login_flag = 1
+login_flag = 0
 
 def login():
+
     root = tk.Tk()
 
     root.geometry("700x600")
@@ -79,6 +80,8 @@ def login():
             login_flag = 1
 
             root.quit()
+            root.destroy()
+            time.sleep(1)
 
         elif username == "" or password == "":
             tk.messagebox.showerror("Aftermosphere", "Fields must not be empty.")
@@ -120,7 +123,7 @@ def main_page():
     label = tk.Label(frame, image=image)
     label.pack()
 
-    
+
 
 
     root.mainloop()
@@ -130,7 +133,7 @@ def main_page():
 
 
 if not login_flag:
-
     login()
+    
 
 main_page()
