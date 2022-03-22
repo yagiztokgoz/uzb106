@@ -115,6 +115,8 @@ def main_page():
     frame = tk.Frame(root, width=1200, height=800)
     frame.pack()
 
+    attr_styles = {"font": ("Trebuchet Ms Bold", 25, "bold")}
+
     image = Image.open("sattelite.jpg")
     image = ImageTk.PhotoImage(image)
 
@@ -124,7 +126,14 @@ def main_page():
     label.pack()
 
 
+    attr_frame= tk.Frame(root, bg="red", relief="flat", bd=5)
+    attr_frame.place(rely = 0.01, relx=0.01, height=100, width=200)
 
+    speed_label = tk.Label(attr_frame, attr_styles, text="Speed: ")
+    speed_label.grid(column=0, row=0)
+
+    alt_label = tk.Label(attr_frame, attr_styles, text="Altitude: ")
+    alt_label.grid(column=0, row=1)
 
     root.mainloop()
 
@@ -132,7 +141,7 @@ def main_page():
 
 
 
-if not login_flag:
+if login_flag:
     login()
     
 
