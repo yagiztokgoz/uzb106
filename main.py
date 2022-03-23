@@ -3,6 +3,7 @@ import tkinter as tk
 import time
 from PIL import Image, ImageTk
 from tkinter import messagebox
+import random
 
 
 login_flag = 0
@@ -111,6 +112,7 @@ def login():
 
 def main_page():
 
+    speed = random.randint(1, 10)
     root = tk.Tk()
     frame = tk.Frame(root, width=1200, height=800)
     frame.pack()
@@ -127,22 +129,32 @@ def main_page():
 
 
     attr_frame= tk.Frame(root, bg="red", relief="flat", bd=5)
-    attr_frame.place(rely = 0.01, relx=0.01, height=100, width=200)
+    attr_frame.place(rely = 0.01, relx=0.01, height=400, width=200)
+
 
     speed_label = tk.Label(attr_frame, attr_styles, text="Speed: ")
     speed_label.grid(column=0, row=0)
 
+    speed_value = tk.Label(attr_frame, attr_styles, text=speed)
+    speed_value.grid(column=1, row=0)
+
+
     alt_label = tk.Label(attr_frame, attr_styles, text="Altitude: ")
-    alt_label.grid(column=0, row=1)
+    alt_label.grid(column=0, row=2)
+
+
+    heat_label = tk.Label(attr_frame, attr_styles, text="Heat: ")
+    heat_label.grid(column=0, row=4)
+
 
     root.mainloop()
 
 
 
+if not login_flag:
 
-
-if login_flag:
     login()
     
 
-main_page()
+if login_flag:
+    main_page()
