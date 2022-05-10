@@ -1,0 +1,18 @@
+//Specify the pin on the STM32 that the I/O pin of the buzzer is attached.
+ 
+void setup() {
+ 
+}//close setup
+ 
+void loop() {
+ 
+  //Tone inputs:
+  //Pin
+  //Frequency
+  //Duration
+ 
+  tone(PA8, 1000, 500); // I/O pin A8
+  
+  delay(1000);
+ 
+}
