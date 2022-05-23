@@ -30,6 +30,8 @@ void setup(){
     Wire.write(0);
     Wire.endTransmission(true);
 
+    aftermosphere_bmp.begin();
+    
     radio.begin();
     radio.openWritingPipe(pipe);
     
