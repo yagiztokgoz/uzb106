@@ -6,7 +6,7 @@
 #include <RF24.h>
 
 BMP180 aftermosphere_bmp(BMP180_ULTRAHIGHRES);
-const uint64_t pipe = 0xE8E8F0F0E1LL;
+const uint64_t pipe = 0xF0F0F0F0E1LL;
 
 RF24 radio(9, 10);
 int16_t ivmeX,ivmeY,ivmeZ,IsI,GyX,GyY,GyZ;
@@ -72,7 +72,8 @@ void loop(){
   /*buzzer_play();*/
 
   radio.write(&data, sizeof(aftermosphere_data));
-  Serial.println(data.isi/340.00+36.53);
+  /*Serial.println(data.isi/340.00+36.53); */
+  Serial.println(data.ivmex);
 }
 
 void buzzer_play(){
