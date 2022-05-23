@@ -1,0 +1,69 @@
+#include <Wire.h>
+#define MPU 0x68
+#include <BMP180.h>
+#include <SPI.h>
+#include <nRF24L01.h>
+#include <RF24.h>
+
+BMP180 aftermosphere_bmp(BMP180_ULTRAHIGHRES);
+const uint64_t pipe = 0xE8E8F0F0E1LL;
+
+RF24 radio(9, 10);
+
+struct aftermosphere_data {
+  
+  int16_t ivmex;
+  int16_t ivmey;
+  int16_t ivmez;
+  int16_t isi;
+  int16_t gyx;
+  int16_t gyy;
+  int16_t gyz;
+  int pressure;
+  
+};
+
+void setup(){
+  
+    Wire.begin();
+    Wire.beginTransmission(MPU);
+    Wire.write(0);
+    Wire.endTransmission(true);
+
+    radio.begin();
+    radio.openWritingPipe(pipe);
+    
+    Serial.begin(9600);
+    
+}
+
+void loop(){
+
+  aftermosphere_data data;
+  
+  Wire.beginTransmission(MPU);
+  Wire.write(0x3B);
+  Wire.endTransmission(false);
+  Wire.requestFrom(MPU, 14, true);
+
+  data.ivmex = Wire.read()<<8|Wire.read();
+  data.ivmey = Wire.read()<<8|Wire.read();
+  data.ivmez = Wire.read()<<8|Wire.read();
+  data.isi = Wire.read()<<8|Wire.read();
+  data.gyx = Wire.read()<<8|Wire.read();
+  data.gyy = Wire.read()<<8|Wire.read();
+  data.gyz = Wire.read()<<8|Wire.read();
+  
+  data.pressure = aftermosphere_bmp.getPressure();
+
+  buzzer_play();
+
+  radio.write(&data, sizeof(aftermosphere_data));
+}
+
+void buzzer_play(){
+
+  tone(PA8, 1000, 500);
+  delay(1000);
+  
+}
