@@ -31,9 +31,12 @@ void setup(){
     Wire.endTransmission(true);
 
     aftermosphere_bmp.begin();
+      
     
     radio.begin();
     radio.openWritingPipe(pipe);
+    radio.SetPALevel(RF24_PA_MAX);
+    radio.stopListening();
     
     Serial.begin(9600);
     
@@ -57,8 +60,8 @@ void loop(){
   data.gyz = Wire.read()<<8|Wire.read();
   
   data.pressure = aftermosphere_bmp.getPressure();
-
-  buzzer_play();
+  Serial.println(data.pressure);
+  /*buzzer_play();*/
 
   radio.write(&data, sizeof(aftermosphere_data));
 }
