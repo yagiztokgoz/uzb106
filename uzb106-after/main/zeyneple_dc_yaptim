@@ -9,6 +9,7 @@ BMP180 aftermosphere_bmp(BMP180_ULTRAHIGHRES);
 const uint64_t pipe = 0xE8E8F0F0E1LL;
 
 RF24 radio(9, 10);
+int16_t ivmeX,ivmeY,ivmeZ,IsI,GyX,GyY,GyZ;
 
 struct aftermosphere_data {
   
@@ -31,11 +32,10 @@ void setup(){
     Wire.endTransmission(true);
 
     aftermosphere_bmp.begin();
-      
     
     radio.begin();
     radio.openWritingPipe(pipe);
-    radio.SetPALevel(RF24_PA_MAX);
+    radio.setPALevel(RF24_PA_MAX);
     radio.stopListening();
     
     Serial.begin(9600);
@@ -47,23 +47,32 @@ void loop(){
   aftermosphere_data data;
   
   Wire.beginTransmission(MPU);
-  Wire.write(0x3B);
+  Wire.write(0x3B); 
   Wire.endTransmission(false);
-  Wire.requestFrom(MPU, 14, true);
+  Wire.requestFrom(MPU,14,true); 
+  
+  ivmeX=Wire.read()<<8|Wire.read();   
+  ivmeY=Wire.read()<<8|Wire.read(); 
+  ivmeZ=Wire.read()<<8|Wire.read(); 
+  IsI=Wire.read()<<8|Wire.read(); 
+  GyX=Wire.read()<<8|Wire.read(); 
+  GyY=Wire.read()<<8|Wire.read();  
+  GyZ=Wire.read()<<8|Wire.read();
 
-  data.ivmex = Wire.read()<<8|Wire.read();
-  data.ivmey = Wire.read()<<8|Wire.read();
-  data.ivmez = Wire.read()<<8|Wire.read();
-  data.isi = Wire.read()<<8|Wire.read();
-  data.gyx = Wire.read()<<8|Wire.read();
-  data.gyy = Wire.read()<<8|Wire.read();
-  data.gyz = Wire.read()<<8|Wire.read();
+  data.ivmex = ivmeX;
+  data.ivmey = ivmeY;
+  data.ivmez = ivmeZ;
+  data.isi = IsI;
+  data.gyx = GyX;
+  data.gyy = GyY;
+  data.gyz = GyZ;
   
   data.pressure = aftermosphere_bmp.getPressure();
-  Serial.println(data.pressure);
+
   /*buzzer_play();*/
 
   radio.write(&data, sizeof(aftermosphere_data));
+  Serial.println(data.isi/340.00+36.53);
 }
 
 void buzzer_play(){
