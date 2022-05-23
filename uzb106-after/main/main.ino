@@ -75,7 +75,7 @@ void bmp_data(){
   int pressure;
 
   pressure = myBMP.getPressure();
-  Serial.print(" | Rüstem = "); Serial.println(pressure);
+  Serial.print(" | Pressure = "); Serial.println(pressure);
 
   /*
   Serial.print(F("Temperature.......: ")); Serial.print(myBMP.getTemperature(), 1); Serial.println(F(" +-1.0C"));
